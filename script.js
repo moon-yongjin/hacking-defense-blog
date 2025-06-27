@@ -1,5 +1,5 @@
 // 관리자 비밀번호 (실제 사용 시 더 안전한 방법으로 변경하세요)
-const ADMIN_PASSWORD = "admin123";
+const ADMIN_PASSWORD = "dudtlrdl80*";
 
 // 블로그 포스트 데이터 (로컬 스토리지에서 관리)
 let blogPosts = JSON.parse(localStorage.getItem('blogPosts')) || [
