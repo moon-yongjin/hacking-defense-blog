@@ -16,7 +16,7 @@
                     <li><a href="#home" class="nav-link">홈</a></li>
                     <li><a href="#about" class="nav-link">소개</a></li>
                     <li><a href="#blog" class="nav-link">블로그</a></li>
-                    <li><a href="#contact" class="nav-link">연락처</a></li>
+                    <li><a href="#write" class="nav-link write-link">글쓰기</a></li>
                 </ul>
             </div>
         </nav>
@@ -55,98 +55,45 @@
         <section id="blog" class="blog">
             <div class="container">
                 <h2 class="section-title">최신 포스트</h2>
-                <div class="blog-grid">
-                    <article class="blog-card">
-                        <div class="blog-card-image">
-                            <div class="image-placeholder">🔐</div>
-                        </div>
-                        <div class="blog-card-content">
-                            <h3>강력한 비밀번호 만드는 법</h3>
-                            <p>해킹으로부터 계정을 보호하는 강력한 비밀번호 생성 방법과 관리 팁을 알아봅니다.</p>
-                            <div class="blog-meta">
-                                <span class="date">2024.01.15</span>
-                                <span class="category">보안 팁</span>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="blog-card">
-                        <div class="blog-card-image">
-                            <div class="image-placeholder">📧</div>
-                        </div>
-                        <div class="blog-card-content">
-                            <h3>피싱 이메일 구별하는 방법</h3>
-                            <p>악의적인 피싱 이메일을 구별하고 안전하게 처리하는 방법을 배워봅니다.</p>
-                            <div class="blog-meta">
-                                <span class="date">2024.01.10</span>
-                                <span class="category">사이버 범죄</span>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="blog-card">
-                        <div class="blog-card-image">
-                            <div class="image-placeholder">🔒</div>
-                        </div>
-                        <div class="blog-card-content">
-                            <h3>2단계 인증의 중요성</h3>
-                            <p>2단계 인증(2FA)을 설정하는 방법과 왜 중요한지에 대해 알아봅니다.</p>
-                            <div class="blog-meta">
-                                <span class="date">2024.01.05</span>
-                                <span class="category">계정 보안</span>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="blog-card">
-                        <div class="blog-card-image">
-                            <div class="image-placeholder">💻</div>
-                        </div>
-                        <div class="blog-card-content">
-                            <h3>공용 Wi-Fi 사용 시 주의사항</h3>
-                            <p>카페나 공공장소의 무료 Wi-Fi를 안전하게 사용하는 방법을 알아봅니다.</p>
-                            <div class="blog-meta">
-                                <span class="date">2024.01.01</span>
-                                <span class="category">네트워크 보안</span>
-                            </div>
-                        </div>
-                    </article>
+                <div class="blog-grid" id="blogGrid">
+                    <!-- 블로그 포스트들이 동적으로 추가됩니다 -->
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="contact">
+        <section id="write" class="write">
             <div class="container">
-                <h2 class="section-title">연락처</h2>
-                <div class="contact-content">
-                    <div class="contact-info">
-                        <h3>궁금한 점이 있으시면 언제든 연락주세요!</h3>
-                        <p>보안 관련 질문이나 블로그 제안사항이 있으시면 이메일로 연락해 주세요.</p>
-                        <div class="contact-details">
-                            <div class="contact-item">
-                                <span class="contact-icon">📧</span>
-                                <span>security.blog@example.com</span>
-                            </div>
-                            <div class="contact-item">
-                                <span class="contact-icon">📱</span>
-                                <span>010-1234-5678</span>
-                            </div>
-                        </div>
-                    </div>
-                    <form class="contact-form">
+                <h2 class="section-title">새 글 작성</h2>
+                <div class="write-content">
+                    <form class="write-form" id="writeForm">
                         <div class="form-group">
-                            <label for="name">이름</label>
-                            <input type="text" id="name" name="name" required>
+                            <label for="title">제목</label>
+                            <input type="text" id="title" name="title" required>
                         </div>
                         <div class="form-group">
-                            <label for="email">이메일</label>
-                            <input type="email" id="email" name="email" required>
+                            <label for="category">카테고리</label>
+                            <select id="category" name="category" required>
+                                <option value="">카테고리 선택</option>
+                                <option value="보안 팁">보안 팁</option>
+                                <option value="사이버 범죄">사이버 범죄</option>
+                                <option value="계정 보안">계정 보안</option>
+                                <option value="네트워크 보안">네트워크 보안</option>
+                                <option value="암호화">암호화</option>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="message">메시지</label>
-                            <textarea id="message" name="message" rows="5" required></textarea>
+                            <label for="summary">요약</label>
+                            <textarea id="summary" name="summary" rows="3" required placeholder="글의 핵심 내용을 간단히 요약해주세요"></textarea>
                         </div>
-                        <button type="submit" class="submit-button">메시지 보내기</button>
+                        <div class="form-group">
+                            <label for="content">내용</label>
+                            <textarea id="content" name="content" rows="15" required placeholder="글의 전체 내용을 작성해주세요"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminPassword">관리자 비밀번호</label>
+                            <input type="password" id="adminPassword" name="adminPassword" required placeholder="관리자 비밀번호를 입력하세요">
+                        </div>
+                        <button type="submit" class="submit-button">글 발행하기</button>
                     </form>
                 </div>
             </div>
@@ -158,6 +105,26 @@
             <p>&copy; 2024 해킹에 대처하자. 모든 권리 보유.</p>
         </div>
     </footer>
+
+    <!-- 글쓰기 성공 모달 -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>✅ 글 발행 완료!</h3>
+            <p>새 글이 성공적으로 발행되었습니다.</p>
+            <button class="modal-button" onclick="closeModal()">확인</button>
+        </div>
+    </div>
+
+    <!-- 비밀번호 오류 모달 -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>❌ 접근 거부</h3>
+            <p>관리자 비밀번호가 올바르지 않습니다.</p>
+            <button class="modal-button" onclick="closeModal()">확인</button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
