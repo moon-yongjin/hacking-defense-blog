@@ -155,7 +155,7 @@ document.querySelectorAll('.blog-card, .skill-tag, .contact-form').forEach(el =>
 function updateFooterYear() {
     const year = new Date().getFullYear();
     const footer = document.querySelector('.footer p');
-    footer.innerHTML = `&copy; ${year} 해킹에 대처하자. 모든 권리 보유.`;
+    footer.innerHTML = `&copy; ${year} Base is under attack. 모든 권리 보유.`;
 }
 
 // 블로그 포스트 렌더링 함수
