@@ -46,12 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
     renderBlogPosts();
     updateFooterYear();
     setupLevelCardActivation();
-
-    // LV1/LV2 카드 클릭 이벤트 리스너 복구
-    const lv1Card = document.getElementById('lv1-card');
-    const lv2Card = document.getElementById('lv2-card');
-    if (lv1Card) lv1Card.onclick = function() { showLevelPosts(1); };
-    if (lv2Card) lv2Card.onclick = function() { showLevelPosts(2); };
 });
 
 // 부드러운 스크롤 기능
@@ -342,48 +336,4 @@ window.movePostToLevel = function(postId, targetLevel) {
     if (typeof renderLevelCards === 'function') renderLevelCards();
     if (typeof closePostDetail === 'function') closePostDetail();
     alert(`포스트가 ${targetLevel}으로 이동되었습니다.`);
-}
-
-// LV1/LV2 카드 클릭 시 해당 레벨 포스트 모달 표시
-function showLevelPosts(level) {
-    const filteredPosts = blogPosts.filter(post => post.category === (level === 1 ? '레벨1' : '레벨2'));
-    const title = level === 1 ? '레벨1 포스트' : '레벨2 포스트';
-    showLevelPostsModal(title, filteredPosts);
-}
-
-// 레벨별 포스트 모달 표시 함수 보장
-function showLevelPostsModal(title, posts) {
-    document.getElementById('modal-title').textContent = `${title} (${posts.length}개)`;
-    const list = document.getElementById('modal-list');
-    list.innerHTML = '';
-    if (posts.length === 0) {
-        list.innerHTML = '<li>포스트가 없습니다.</li>';
-    } else {
-        posts.forEach(post => {
-            const li = document.createElement('li');
-            li.textContent = post.title;
-            li.style.cursor = 'pointer';
-            li.onclick = () => {
-                closeLevelPostsModal();
-                showPostDetail(post);
-            };
-            list.appendChild(li);
-        });
-    }
-    document.getElementById('levelPostsModal').style.display = 'block';
-}
-
-function closeLevelPostsModal() {
-    document.getElementById('levelPostsModal').style.display = 'none';
-}
-
-// 모달 닫기 버튼 이벤트 연결 보장
-const closeLevelModalBtn = document.getElementById('close-level-modal');
-if (closeLevelModalBtn) closeLevelModalBtn.onclick = closeLevelPostsModal;
-
-function closePostDetail() {
-    const modal = document.getElementById('postDetailModal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
 } 

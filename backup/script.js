@@ -135,12 +135,17 @@ function updateFooterYear() {
 
 // 블로그 포스트 렌더링 함수
 function renderBlogPosts() {
-    const blogGrid = document.getElementById('blogGrid');
-    blogGrid.innerHTML = '';
-    
-    blogPosts.forEach(post => {
+    const blogPostsContainer = document.getElementById('blogPosts');
+    if (!blogPostsContainer) return;
+    blogPostsContainer.innerHTML = '';
+    const postsToShowOnMain = blogPosts.filter(post => post.category !== '레벨1' && post.category !== '레벨2');
+    if (postsToShowOnMain.length === 0) {
+        blogPostsContainer.innerHTML = '<p style="text-align: center; color: #666;">표시할 최신 포스트가 없습니다.</p>';
+        return;
+    }
+    postsToShowOnMain.forEach(post => {
         const postElement = createBlogPostElement(post);
-        blogGrid.appendChild(postElement);
+        blogPostsContainer.appendChild(postElement);
     });
 }
 
@@ -262,15 +267,34 @@ function closeModal() {
 
 // 포스트 상세 보기 (간단한 alert로 구현)
 function showPostDetail(post) {
-    const detailText = `
-제목: ${post.title}
-카테고리: ${post.tags.join(', ')}
-작성일: ${post.date}
-
-내용:
-${post.content}
+    const modal = document.getElementById('postDetailModal');
+    const content = document.getElementById('postDetailContent');
+    
+    const tagsHtml = post.tags && post.tags.length > 0 
+        ? `<div class="post-tags">${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}</div>`
+        : '';
+    
+    content.innerHTML = `
+        <div class="post-detail">
+            <div class="post-header">
+                <span class="post-icon">${post.icon}</span>
+                <h2>${post.title}</h2>
+            </div>
+            <div class="post-meta">
+                <span class="post-category">${post.category ? post.category : ''}</span>
+            </div>
+            <p class="post-summary">${post.summary}</p>
+            <div class="post-content">${post.content}</div>
+            ${tagsHtml}
+            <div class="post-actions">
+                <button onclick="showDeleteConfirm(${post.id})" class="modal-button delete">삭제</button>
+                <button onclick="movePostToLevel(${post.id}, '레벨1')" class="modal-button">LV1으로 이동</button>
+                <button onclick="movePostToLevel(${post.id}, '레벨2')" class="modal-button">LV2으로 이동</button>
+            </div>
+        </div>
     `;
-    alert(detailText);
+    
+    modal.style.display = 'block';
 }
 
 // 전역 함수로 모달 닫기 함수 노출
@@ -289,4 +313,24 @@ function setupLevelCardActivation() {
         lv2.classList.add('active');
         lv1.classList.remove('active');
     };
+}
+
+// 포스트 이동 함수
+window.movePostToLevel = function(postId, targetLevel) {
+    const adminPassword = prompt('포스트를 이동하려면 관리자 비밀번호를 입력하세요:');
+    if (adminPassword !== ADMIN_PASSWORD) {
+        alert('관리자 비밀번호가 올바르지 않습니다.');
+        return;
+    }
+    const postIndex = blogPosts.findIndex(p => p.id === postId);
+    if (postIndex === -1) {
+        alert('포스트를 찾을 수 없습니다.');
+        return;
+    }
+    blogPosts[postIndex].category = targetLevel;
+    localStorage.setItem('blogPosts', JSON.stringify(blogPosts));
+    renderBlogPosts();
+    renderLevelCards && renderLevelCards();
+    closePostDetail && closePostDetail();
+    alert(`포스트가 ${targetLevel}으로 이동되었습니다.`);
 } 
