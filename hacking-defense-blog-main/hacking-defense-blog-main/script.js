@@ -8,7 +8,7 @@ let blogPosts = JSON.parse(localStorage.getItem('blogPosts')) || [
         title: "강력한 비밀번호 만드는 법",
         summary: "해킹으로부터 계정을 보호하는 강력한 비밀번호 생성 방법과 관리 팁을 알아봅니다.",
         content: "비밀번호는 디지털 보안의 첫 번째 방어선입니다. 강력한 비밀번호를 만드는 방법과 안전하게 관리하는 팁을 소개합니다.",
-        tags: ["비밀번호", "계정", "보호", "생성", "관리", "팁"],
+        category: "보안 팁",
         date: "2024.01.15",
         icon: "🔐"
     },
@@ -17,7 +17,7 @@ let blogPosts = JSON.parse(localStorage.getItem('blogPosts')) || [
         title: "피싱 이메일 구별하는 방법",
         summary: "악의적인 피싱 이메일을 구별하고 안전하게 처리하는 방법을 배워봅니다.",
         content: "피싱 이메일은 개인정보를 탈취하려는 악의적인 시도입니다. 피싱 이메일의 특징과 대응 방법을 알아봅니다.",
-        tags: ["피싱", "이메일", "보안", "악의적인", "시도"],
+        category: "사이버 범죄",
         date: "2024.01.10",
         icon: "📧"
     },
@@ -26,7 +26,7 @@ let blogPosts = JSON.parse(localStorage.getItem('blogPosts')) || [
         title: "2단계 인증의 중요성",
         summary: "2단계 인증(2FA)을 설정하는 방법과 왜 중요한지에 대해 알아봅니다.",
         content: "2단계 인증은 계정 보안을 크게 향상시키는 방법입니다. 설정 방법과 보안 효과에 대해 설명합니다.",
-        tags: ["2단계", "인증", "보안", "효과", "설정"],
+        category: "계정 보안",
         date: "2024.01.05",
         icon: "🔒"
     },
@@ -35,7 +35,7 @@ let blogPosts = JSON.parse(localStorage.getItem('blogPosts')) || [
         title: "공용 Wi-Fi 사용 시 주의사항",
         summary: "카페나 공공장소의 무료 Wi-Fi를 안전하게 사용하는 방법을 알아봅니다.",
         content: "공용 Wi-Fi는 편리하지만 보안 위험이 따릅니다. 안전하게 사용하는 방법과 주의사항을 알아봅니다.",
-        tags: ["공용", "Wi-Fi", "보안", "위험", "주의사항"],
+        category: "네트워크 보안",
         date: "2024.01.01",
         icon: "💻"
     }
@@ -71,6 +71,32 @@ window.addEventListener('scroll', function() {
         header.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
         header.style.backdropFilter = 'none';
     }
+});
+
+// 폼 제출 처리
+document.querySelector('.contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+    
+    if (name && email && message) {
+        // 실제로는 서버로 데이터를 전송하는 코드가 들어갑니다
+        alert('메시지가 성공적으로 전송되었습니다!');
+        this.reset();
+    } else {
+        alert('모든 필드를 입력해주세요.');
+    }
+});
+
+// 블로그 카드 클릭 효과
+document.querySelectorAll('.blog-card').forEach(card => {
+    card.addEventListener('click', function() {
+        // 실제로는 블로그 포스트 페이지로 이동하는 코드가 들어갑니다
+        const title = this.querySelector('h3').textContent;
+        alert(`"${title}" 포스트를 읽어보세요!`);
+    });
 });
 
 // 스킬 태그 애니메이션
@@ -147,46 +173,21 @@ function renderBlogPosts() {
 function createBlogPostElement(post) {
     const article = document.createElement('article');
     article.className = 'blog-card';
-    article.onclick = (e) => {
-        // 삭제 버튼 클릭 시 상세보기 막기
-        if (e.target.classList.contains('delete-btn')) return;
-        showPostDetail(post);
-    };
-    
-    // 태그 HTML
-    const tagsHtml = post.tags && post.tags.length > 0
-        ? `<div class="post-tags">${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}</div>`
-        : '';
-    
-    // 삭제 버튼 HTML
-    const deleteBtnHtml = `<button class="delete-btn" title="삭제">&times;</button>`;
+    article.onclick = () => showPostDetail(post);
     
     article.innerHTML = `
-        <div class="blog-card-image" style="position:relative;">
+        <div class="blog-card-image">
             <div class="image-placeholder">${post.icon}</div>
-            <div style="position:absolute;top:10px;right:10px;z-index:2;">${deleteBtnHtml}</div>
         </div>
         <div class="blog-card-content">
             <h3>${post.title}</h3>
             <p>${post.summary}</p>
-            ${tagsHtml}
+            <div class="blog-meta">
+                <span class="date">${post.date}</span>
+                <span class="category">${post.category}</span>
+            </div>
         </div>
     `;
-    
-    // 삭제 버튼 이벤트
-    article.querySelector('.delete-btn').onclick = function(e) {
-        e.stopPropagation();
-        const input = prompt('관리자 비밀번호를 입력하세요.');
-        if (input === ADMIN_PASSWORD) {
-            // 삭제
-            blogPosts = blogPosts.filter(p => p.id !== post.id);
-            localStorage.setItem('blogPosts', JSON.stringify(blogPosts));
-            renderBlogPosts();
-            alert('포스트가 삭제되었습니다.');
-        } else {
-            alert('비밀번호가 올바르지 않습니다.');
-        }
-    };
     
     return article;
 }
@@ -196,6 +197,7 @@ document.getElementById('writeForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
     const title = document.getElementById('title').value;
+    const category = document.getElementById('category').value;
     const summary = document.getElementById('summary').value;
     const content = document.getElementById('content').value;
     const adminPassword = document.getElementById('adminPassword').value;
@@ -206,18 +208,15 @@ document.getElementById('writeForm').addEventListener('submit', function(e) {
         return;
     }
     
-    // 태그 자동 추출 (요약에서 중복 없이 최대 8개)
-    const tags = Array.from(new Set(summary.split(/\s+/).map(w => w.replace(/[^\w가-힣]/g, "")).filter(Boolean))).slice(0, 8);
-    
     // 새 포스트 생성
     const newPost = {
         id: Date.now(),
         title: title,
         summary: summary,
         content: content,
-        tags: tags,
+        category: category,
         date: new Date().toLocaleDateString('ko-KR'),
-        icon: '📝'
+        icon: getCategoryIcon(category)
     };
     
     // 포스트 추가
@@ -233,6 +232,18 @@ document.getElementById('writeForm').addEventListener('submit', function(e) {
     // 성공 모달 표시
     showModal('successModal');
 });
+
+// 카테고리별 아이콘 반환
+function getCategoryIcon(category) {
+    const icons = {
+        '보안 팁': '🔐',
+        '사이버 범죄': '📧',
+        '계정 보안': '🔒',
+        '네트워크 보안': '💻',
+        '암호화': '🔑'
+    };
+    return icons[category] || '📝';
+}
 
 // 모달 표시 함수
 function showModal(modalId) {
@@ -263,7 +274,7 @@ function closeModal() {
 function showPostDetail(post) {
     const detailText = `
 제목: ${post.title}
-카테고리: ${post.tags.join(', ')}
+카테고리: ${post.category}
 작성일: ${post.date}
 
 내용:
