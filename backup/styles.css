@@ -468,21 +468,12 @@ section {
     pointer-events: auto;
 }
 
-.levels h2 {
-    text-align: center;
-    font-size: 2.4rem;
-    font-weight: 800;
-    margin-bottom: 36px;
-    margin-top: 0;
-    letter-spacing: -1px;
-}
-
 .level-cards {
     display: flex;
     flex-direction: row;
     gap: 32px;
     justify-content: center;
-    margin: 32px 0 48px 0;
+    margin: 32px 0;
 }
 
 .level-card {
@@ -521,5 +512,7 @@ section {
 }
 
 .level-count {
-    display: none;
+    font-size: 1.2rem;
+    margin-top: 8px;
+    display: block;
 } 
