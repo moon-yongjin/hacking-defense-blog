@@ -361,7 +361,15 @@ function showLevelPostsModal(title, posts) {
     } else {
         posts.forEach(post => {
             const li = document.createElement('li');
-            li.textContent = post.title;
+            li.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.2rem;">${post.icon || '📝'}</span>
+                    <div>
+                        <h4 style="margin: 0; font-size: 1.1rem; color: white;">${post.title}</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: #bbb; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${post.summary}</p>
+                    </div>
+                </div>
+            `;
             li.style.cursor = 'pointer';
             li.onclick = () => {
                 closeLevelPostsModal();
